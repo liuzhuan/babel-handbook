@@ -268,6 +268,8 @@ deploy code that gets compiled this way. It is far better to compile ahead of
 time before deploying. However this works quite well for build scripts or other
 things that you run locally.
 
+> 生产环境不推荐使用，因为性能太低。
+
 First make sure that you have `babel-cli` installed.
 
 ```sh
@@ -331,6 +333,8 @@ babel.transformFile("filename.js", options, function(err, result) {
 });
 ```
 
+> code 指的是原始代码
+
 Or the synchronous api:
 
 ```js
@@ -365,6 +369,8 @@ This is because we haven't told Babel to do anything yet.
 You can give Babel instructions on what to do by installing **plugins** or
 **presets** (groups of plugins).
 
+> 预设值 presets 就是多个插件 plugins 的集合。
+
 ## <a id="toc-babelrc"></a>`.babelrc`
 
 Before we start telling Babel what to do. We need to create a configuration
@@ -388,6 +394,8 @@ This file is how you configure Babel to do what you want.
 Let's start by telling Babel to compile ES2015 (the newest version of the
 JavaScript standard, also known as ES6) to ES5 (the version available in most
 JavaScript environments today).
+
+> es2015 预设用来把 ES2015 的语法转译为 ES5
 
 We'll do this by installing the "es2015" Babel preset:
 
@@ -446,9 +454,13 @@ These are bundled in babel as 4 different presets:
 > Note that there is no stage-4 preset as it is simply the `es2015` preset
 > above.
 
+> 注意上面没有 `stage-4` 阶段，因为 `stage-4` 已经是正式版，已合并入 `es2015` 插件
+
 Each of these presets requires the preset for the later stages. i.e.
 `babel-preset-stage-1` requires `babel-preset-stage-2` which requires
 `babel-preset-stage-3`.
+
+> 每个 stage 都依赖后面的 stage。比如 `stage-1` 依赖 `stage-2`。
 
 Simply install the stage you are interested in using:
 
@@ -477,7 +489,7 @@ So you've compiled your code with Babel, but this is not the end of the story.
 
 ## <a id="toc-babel-polyfill"></a>`babel-polyfill`
 
-Almost all futuristic JavaScript syntax can be compiled with Babel, but the same
+Almost all futuristic（未来主义的） JavaScript syntax can be compiled with Babel, but the same
 is not true for APIs.
 
 For example, the following code has an arrow function that needs to be compiled:
@@ -511,6 +523,8 @@ polyfill is a piece of code that replicates a native api that does not exist in
 the current runtime. Allowing you to use APIs such as `Array.from` before they
 are available.
 
+> 使用垫片 polyfill 可以解决 api 的兼容问题。
+
 Babel uses the excellent [core-js](https://github.com/zloirock/core-js) as its
 polyfill, along with a customized
 [regenerator](https://github.com/facebook/regenerator) runtime for getting
@@ -532,6 +546,8 @@ import "babel-polyfill";
 
 In order to implement details of ECMAScript specs, Babel will use "helper"
 methods in order to keep the generated code clean.
+
+> 辅助函数 helper 解决的是转译问题，可以让转移后的代码更清晰。复杂的逻辑提取到辅助函数中。
 
 Since these helpers can get pretty long, and they get added to the top of every
 file you can move them into a single "runtime" which gets required.
@@ -670,6 +686,8 @@ environment. You can do this easily with your `.babelrc` file.
   }
 ```
 
+> 可以根据不同的环境切换不同的插件，使用 `env` 属性即可。
+
 Babel will enable configuration inside of `env` based on the current
 environment.
 
@@ -759,6 +777,8 @@ module.exports = {
 ```
 
 Then simply publish this to npm and you can use it like you would any preset.
+
+> 自定义预设很简单：创建 `package.json` 依赖项，创建 `index.js` 将 `presets` 和 `plugins` 导出。
 
 ----
 
@@ -860,7 +880,7 @@ For more information consult the
 
 ### <a id="toc-documentation"></a>Documentation
 
-Using Babel, ES2015, and Flow you can infer a lot about your code. Using
+Using Babel, ES2015, and Flow you can infer（推断） a lot about your code. Using
 [documentation.js](http://documentation.js.org) you can generate detailed API
 documentation very easily.
 
